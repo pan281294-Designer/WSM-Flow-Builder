@@ -33,7 +33,7 @@ export default function AIConnectModal({ isOpen, onClose }) {
       <div className="bg-white dark:bg-[#0f1117] rounded-2xl w-[500px] shadow-2xl border border-slate-200 dark:border-[#1e2330] overflow-hidden transition-colors">
         <div className="p-6 border-b border-slate-100 dark:border-[#1e2330] flex items-center justify-between bg-slate-50 dark:bg-[#161b22] transition-colors">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/40 dark:to-blue-900/40 border border-transparent dark:border-cyan-800/50 rounded-lg">
+            <div className="p-2 bg-slate-100 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-lg">
               <Sparkles className="text-cyan-600 dark:text-cyan-400" size={20} />
             </div>
             <h2 className="text-lg font-bold text-slate-800 dark:text-white">Generate AI Flow</h2>
@@ -58,7 +58,7 @@ export default function AIConnectModal({ isOpen, onClose }) {
           <button 
              onClick={handleGenerate}
              disabled={isGenerating || !prompt.trim()}
-             className="w-full flex justify-center items-center gap-2 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-semibold text-[14px] transition-all shadow-[0_4px_14px_0_rgba(6,182,212,0.39)] hover:shadow-[0_6px_20px_rgba(6,182,212,0.23)] disabled:opacity-50 disabled:cursor-not-allowed"
+             className="w-full flex justify-center items-center gap-2 py-3 bg-[#155DFC] hover:bg-[#155DFC]/90 text-white rounded-xl font-semibold text-[14px] transition-all shadow-[0_4px_14px_0_rgba(21,93,252,0.3)] hover:shadow-[0_6px_20px_rgba(21,93,252,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isGenerating ? (
               <>

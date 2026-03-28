@@ -279,7 +279,7 @@ export default function ImageUploadModal({ isOpen, onClose }) {
             <Button
               onClick={handleConvert}
               disabled={!file || loading}
-              className="flex-1 h-12 bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-500 hover:to-purple-600 text-white rounded-2xl font-bold text-[14px] shadow-xl shadow-violet-500/10"
+              className="flex-1 h-12 bg-[#155DFC] hover:bg-[#155DFC]/90 text-white rounded-2xl font-bold text-[14px] shadow-xl shadow-[#155DFC]/10"
             >
               {loading
                 ? <><Loader2 className="animate-spin mr-2" size={20} />Analyzing Image...</>
@@ -298,7 +298,7 @@ export default function ImageUploadModal({ isOpen, onClose }) {
               </Button>
               <Button
                 onClick={handleApply}
-                className="flex-1 h-12 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white rounded-2xl font-bold text-[14px] shadow-xl shadow-emerald-500/10"
+                className="flex-1 h-12 bg-[#155DFC] hover:bg-[#155DFC]/90 text-white rounded-2xl font-bold text-[14px] shadow-xl shadow-[#155DFC]/10"
               >
                 <CheckCircle className="mr-2" size={20} />Apply to Canvas
               </Button>

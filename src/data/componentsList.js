@@ -32,13 +32,13 @@ export const SMART_COMPONENTS = [
     id: 'web-app', label: 'Web App',
     keywords: ['web app', 'frontend', 'browser', 'react app', 'vue app', 'next.js', 'angular', 'svelte', 'html', 'spa', 'pwa', 'website', 'portal', 'web client', 'web browser', 'web interface', 'web page'],
     lucideIcon: Globe, untitledIcon: Globe01, preferred: 'untitled',
-    colorHint: '#06b6d4',
+    colorHint: '#155DFC',
   },
   {
     id: 'mobile-app', label: 'Mobile App',
     keywords: ['mobile app', 'ios app', 'android app', 'mobile client', 'flutter', 'react native', 'swift', 'kotlin', 'mobile device', 'smartphone', 'tablet'],
     lucideIcon: Smartphone, untitledIcon: Phone01, preferred: 'untitled',
-    colorHint: '#06b6d4',
+    colorHint: '#155DFC',
   },
   {
     id: 'api-server', label: 'API Server',

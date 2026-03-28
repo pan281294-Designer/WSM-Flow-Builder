@@ -217,7 +217,7 @@ export default function App() {
       <TooltipProvider delayDuration={400}>
       <div className="h-14 border-b border-slate-200 dark:border-[#1e2330] bg-white dark:bg-[#0d1017] flex items-center justify-between px-5 z-30 shadow-sm relative transition-colors">
         <div className="font-bold text-lg flex items-center gap-3">
-          <span className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-2.5 py-1 rounded-md text-sm font-extrabold shadow-inner leading-relaxed">WSM</span>
+          <span className="bg-[#155DFC] text-white px-2.5 py-1 rounded-md text-sm font-extrabold shadow-inner leading-relaxed">WSM</span>
           <span className="tracking-tight text-slate-800 dark:text-white font-medium">Flow Builder</span>
         </div>
 
@@ -364,7 +364,7 @@ export default function App() {
           <Separator orientation="vertical" className="h-5 mx-1 dark:bg-[#30363d]" />
 
           <Button onClick={() => setIsAIModalOpen(true)}
-            className="gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-medium text-sm shadow-md hover:scale-105 transition-all">
+            className="gap-2 bg-[#155DFC] hover:bg-[#155DFC]/90 text-white font-medium text-sm shadow-md hover:scale-105 transition-all">
             <Sparkles size={15} /> AI Connect
           </Button>
         </div>
