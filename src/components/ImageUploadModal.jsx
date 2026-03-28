@@ -55,42 +55,44 @@ export default function ImageUploadModal({ isOpen, onClose }) {
       const base64 = await base64Promise;
 
       // Step 2: Call AI
-      const raw = await convertImageToFlow(base64, file.type);
+      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      if (!apiKey) throw new Error('OpenAI API Key not found in Environment. Please add VITE_OPENAI_API_KEY to your .env file.');
+      
+      const raw = await convertImageToFlow(base64, apiKey);
 
       // Step 3: Enrich nodes with component metadata + carry flowDirection for layout
-      const flowDirection = raw.flowDirection || null;
+      const flowDirection = raw.flowDirection || 'LR';
       const enrichedNodes = raw.nodes.map(n => {
-        const compId = n.data.componentId;
-        const component = getComponentDetails(compId) || detectComponent(n.data.label);
+        const compId = n.data?.componentId || 'api-server';
+        const component = getComponentDetails(compId) || detectComponent(n.data?.label || '');
         return {
           ...n,
           type: 'universal',
+          rank: n.rank, // Pass AI-detected rank to dagre
           _flowDirection: flowDirection,
           data: {
             ...n.data,
             componentId: component.id,
             color: component.colorHint,
+            layout: 'vertical',
+            status: 'Active'
           },
         };
       });
 
-      // Step 4: Enrich edges — add custom type, sourceHandle/targetHandle, and defaults
-      const defaultSource = flowDirection === 'TB' ? 'bottom' : 'right';
-      const defaultTarget = flowDirection === 'TB' ? 'top'   : 'left';
+      // Step 4: Enrich edges — add handle metadata and styling
       const enrichedEdges = raw.edges.map(e => ({
         ...e,
         type: 'custom',
-        sourceHandle: e.sourceHandle || defaultSource,
-        targetHandle: e.targetHandle || defaultTarget,
+        sourceHandle: e.sourceHandle || (flowDirection === 'TB' ? 'bottom' : 'right'),
+        targetHandle: e.targetHandle || (flowDirection === 'TB' ? 'top' : 'left'),
         data: {
           shape: 'bezier',
           stroke: 'solid',
           arrow: 'arrow',
-          label: '',
-          showLabel: false,
-          labelColor: 'slate',
-          ...e.data,
+          label: e.data?.label || '',
           showLabel: !!(e.data?.label),
+          labelColor: 'slate',
         },
       }));
 

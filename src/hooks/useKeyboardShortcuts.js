@@ -9,29 +9,18 @@ export function useKeyboardShortcuts(actions) {
       const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
       const isCtrl = isMac ? e.metaKey : e.ctrlKey;
       const tag = document.activeElement?.tagName;
+      const isEditable = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
 
-      // Don't fire shortcuts when user is typing in an input
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (isCtrl && e.key === 'z' && !e.shiftKey) { e.preventDefault(); actionsRef.current.undo?.(); }
+      if (isCtrl && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); actionsRef.current.redo?.(); }
+      if (isCtrl && e.key === 's') { e.preventDefault(); actionsRef.current.saveProject?.(); }
 
-      if (isCtrl && e.key === 'z' && !e.shiftKey) {
-        e.preventDefault();
-        actionsRef.current.undo();
-      }
-      if (isCtrl && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
-        e.preventDefault();
-        actionsRef.current.redo();
-      }
-      if (isCtrl && e.key === 'c') {
-        e.preventDefault();
-        actionsRef.current.copy();
-      }
-      if (isCtrl && e.key === 'v') {
-        e.preventDefault();
-        actionsRef.current.paste();
-      }
-      if (isCtrl && e.key === 'd') {
-        e.preventDefault();
-        actionsRef.current.duplicate();
+      // Only fire these when NOT in an input field
+      if (!isEditable) {
+        if (isCtrl && e.key === 'c') { e.preventDefault(); actionsRef.current.copy?.(); }
+        if (isCtrl && e.key === 'v') { e.preventDefault(); actionsRef.current.paste?.(); }
+        if (isCtrl && e.key === 'd') { e.preventDefault(); actionsRef.current.duplicate?.(); }
+        if (e.key === 'Delete' || e.key === 'Backspace') { actionsRef.current.deleteSelected?.(); }
       }
     };
 

@@ -140,10 +140,10 @@ export function buildVectorSVG(nodes, edges) {
   const nodesSVG = nodes.map(node => {
     const { data, position } = node;
     const details = getComponentDetails(data.componentId);
-    const color = data.color || details.colorHint || '#06b6d4';
+    const color = data.color || details?.colorHint || '#06b6d4';
     const x = position.x - minX;
     const y = position.y - minY;
-    const label = data.label || details.label || '';
+    const label = data.label || details?.label || '';
     const status = data.status || 'Active';
     const statusColor = STATUS_MAP[status] || STATUS_MAP.Active;
 
@@ -196,8 +196,11 @@ export async function copyVectorSVG(nodes, edges) {
 }
 
 export async function downloadPNG(containerRef) {
-  const el = containerRef?.current?.querySelector('.react-flow__viewport');
+  // Accept an optional ref; fall back to querying the DOM directly
+  const el = containerRef?.current
+    ? containerRef.current.querySelector('.react-flow__viewport')
+    : document.querySelector('.react-flow__viewport');
   if (!el) return;
-  const dataUrl = await toPng(el, { pixelRatio: 2, backgroundColor: '#f8fafc' });
+  const dataUrl = await toPng(el, { pixelRatio: 2, backgroundColor: '#ffffff' });
   download(dataUrl, 'wsm-flow-diagram.png');
 }

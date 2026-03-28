@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>WSM Builder — UI Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #f9fafb; color: #111; display: flex; height: 100vh; overflow: hidden; }
+
+  /* ── Left Nav Sidebar ── */
+  .nav-sidebar {
+    width: 220px;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    z-index: 20;
+  }
+  .nav-sidebar-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: #2563eb; }
+  .nav-collapse-btn {
+    margin-left: auto;
+    width: 28px; height: 28px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: #6b7280;
+    font-size: 13px;
+  }
+  .nav-project {
+    padding: 12px 14px 8px;
+    display: flex; align-items: center; gap-8px;
+  }
+  .nav-project-badge {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: linear-gradient(135deg, #f97316, #ea580c);
+    color: white; font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-project-name { font-size: 13px; font-weight: 600; color: #111; margin-left: 8px; flex: 1; }
+  .nav-project-chevron { color: #9ca3af; font-size: 11px; margin-left: auto; }
+  .nav-section { padding: 4px 8px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 8px; border-radius: 7px;
+    font-size: 13px; color: #374151; cursor: pointer;
+    transition: background 0.1s;
+  }
+  .nav-item:hover { background: #f3f4f6; }
+  .nav-item.active { background: #eff6ff; color: #2563eb; }
+  .nav-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .nav-item .shortcut { margin-left: auto; font-size: 10px; color: #9ca3af; background: #f3f4f6; padding: 1px 5px; border-radius: 4px; }
+  .nav-divider { height: 1px; background: #e5e7eb; margin: 6px 8px; }
+  .nav-section-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 8px 4px; }
+  .nav-footer {
+    margin-top: auto;
+    padding: 12px;
+    border-top: 1px solid #e5e7eb;
+  }
+  .nav-upgrade {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .nav-upgrade strong { display: block; color: #2563eb; font-size: 12px; margin-bottom: 2px; }
+  .nav-upgrade span { color: #6b7280; }
+  .nav-footer-icons {
+    display: flex; gap: 4px; margin-top: 10px;
+  }
+  .nav-footer-icons button {
+    width: 32px; height: 32px; border: none; background: none; border-radius: 6px;
+    cursor: pointer; color: #6b7280; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-footer-icons button:hover { background: #f3f4f6; }
+
+  /* ── Main area ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    height: 46px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 6px;
+    flex-shrink: 0;
+    z-index: 10;
+  }
+  .topbar-breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: #6b7280;
+  }
+  .topbar-breadcrumb .crumb { cursor: pointer; }
+  .topbar-breadcrumb .crumb:hover { color: #111; }
+  .topbar-breadcrumb .current { color: #111; font-weight: 500; }
+  .topbar-sep { color: #d1d5db; }
+  .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .btn-share {
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── Canvas ── */
+  .canvas-wrap {
+    flex: 1;
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  /* dot grid */
+  .canvas-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  /* ── Floating tool pill ── */
+  .tool-pill {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 99px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    z-index: 10;
+  }
+  .tool-btn {
+    width: 32px; height: 32px;
+    border: none; background: none;
+    border-radius: 99px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: #6b7280;
+    font-size: 14px;
+    transition: background 0.1s, color 0.1s;
+  }
+  .tool-btn:hover { background: #f3f4f6; color: #111; }
+  .tool-btn.active { background: #111; color: #fff; }
+  .tool-divider { height: 1px; background: #e5e7eb; margin: 2px 4px; }
+
+  /* ── Nodes on canvas ── */
+  .canvas-nodes {
+    position: absolute;
+    inset: 0;
+  }
+
+  .node-card {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    user-select: none;
+  }
+  .node-card:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .node-card.selected {
+    border-color: #2563eb;
+    border-width: 2px;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  .node-icon-wrap {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .node-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .node-status {
+    display: flex; align-items: center; gap: 4px;
+    margin-top: 8px;
+    padding: 2px 8px;
+    border: 1px solid #f3f4f6;
+    border-radius: 99px;
+    background: #f9fafb;
+  }
+  .node-status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .node-status span { font-size: 9px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* SVG edges */
+  .edges-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .edge-path {
+    fill: none;
+    stroke: #d1d5db;
+    stroke-width: 1.5;
+  }
+
+  /* ── Context toolbar (appears on selection) ── */
+  .context-toolbar {
+    position: absolute;
+    top: 175px;
+    left: 535px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 20;
+  }
+  .ctx-btn {
+    width: 30px; height: 30px;
+    border: none; background: none; border-radius: 5px;
+    cursor: pointer; font-size: 13px; color: #374151;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ctx-btn:hover { background: #f3f4f6; }
+  .ctx-sep { width: 1px; height: 20px; background: #e5e7eb; margin: 0 2px; }
+
+  /* ── Properties drawer (slide in) ── */
+  .props-drawer {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 260px;
+    background: #fff;
+    border-left: 1px solid #e5e7eb;
+    padding: 16px;
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .props-title { font-size: 12px; font-weight: 700; color: #111; letter-spacing: 0.02em; }
+  .props-row { display: flex; flex-direction: column; gap: 5px; }
+  .props-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; }
+  .props-input {
+    border: 1px solid #e5e7eb; border-radius: 7px; padding: 7px 10px;
+    font-size: 12px; color: #111; outline: none; width: 100%;
+    font-family: inherit;
+  }
+  .props-input:focus { border-color: #2563eb; }
+  .color-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .color-swatch {
+    width: 22px; height: 22px; border-radius: 6px; cursor: pointer;
+    border: 2px solid transparent; transition: border-color 0.1s;
+  }
+  .color-swatch.active { border-color: #111; }
+  .props-divider { height: 1px; background: #f3f4f6; }
+
+  /* ── Bottom bar ── */
+  .bottombar {
+    position: absolute;
+    bottom: 0; right: 0;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: #6b7280;
+    z-index: 10;
+  }
+  .zoom-control {
+    display: flex; align-items: center; gap: 6px;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 7px;
+    padding: 4px 10px; font-size: 12px; color: #374151;
+  }
+  .feedback-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 7px;
+    padding: 5px 12px; font-size: 12px; color: #374151;
+    cursor: pointer;
+  }
+
+  /* label badge */
+  .new-badge {
+    font-size: 9px; font-weight: 700; color: #2563eb;
+    background: #eff6ff; border-radius: 4px; padding: 1px 5px;
+    margin-left: 6px; text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- Left Nav Sidebar -->
+<aside class="nav-sidebar">
+  <div class="nav-sidebar-header">
+    <div class="nav-logo">WSM <span>Builder</span></div>
+    <button class="nav-collapse-btn">⇤</button>
+  </div>
+
+  <div class="nav-section" style="padding-top:10px">
+    <div style="display:flex;align-items:center;padding:6px 8px 10px;gap:8px">
+      <div class="nav-project-badge">W</div>
+      <span class="nav-project-name">WSM Project</span>
+      <span class="nav-project-chevron">▾</span>
+    </div>
+
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search
+      <span class="shortcut">⌘K</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      Home
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Diagrams
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Team
+    </div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Tools</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18M3 9h6M3 15h6"/></svg>
+      Spaces
+      <span class="new-badge">New</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12 22 2"/></svg>
+      AI Generator
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Assistant
+    </div>
+  </div>
+
+  <div class="nav-divider"></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Recents</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
+      WSM API Flow
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
+      Auth System
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/></svg>
+      RAG Pipeline
+    </div>
+  </div>
+
+  <div class="nav-footer">
+    <div class="nav-upgrade">
+      <strong>Upgrade to Pro</strong>
+      <span>Unlock export, sharing &amp; more</span>
+    </div>
+    <div class="nav-footer-icons">
+      <button>?</button>
+      <button>⚙</button>
+      <button>🔔</button>
+      <button>···</button>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Canvas Area -->
+<div class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-breadcrumb">
+      <span class="crumb">WSM Project</span>
+      <span class="topbar-sep">/</span>
+      <span class="crumb">Spaces</span>
+      <span class="topbar-sep">/</span>
+      <span class="current">API Auth Flow</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-share">⇧ Share</button>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <div class="canvas-wrap">
+
+    <!-- SVG Edges -->
+    <svg class="edges-svg">
+      <!-- Web App → API Server -->
+      <path class="edge-path" d="M 360 270 C 420 270, 420 270, 480 270"/>
+      <!-- API Server → Auth -->
+      <path class="edge-path" d="M 640 270 C 700 270, 700 330, 760 330"/>
+      <!-- API Server → Database -->
+      <path class="edge-path" d="M 640 270 C 700 270, 700 210, 760 210"/>
+      <!-- Auth → LLM -->
+      <path class="edge-path" d="M 920 330 C 980 330, 980 270, 1040 270"/>
+      <!-- Database → LLM -->
+      <path class="edge-path" d="M 920 210 C 980 210, 980 270, 1040 270"/>
+    </svg>
+
+    <!-- Nodes -->
+    <div class="canvas-nodes">
+
+      <!-- Web App -->
+      <div class="node-card" style="left:200px;top:220px;width:160px">
+        <div class="node-icon-wrap" style="background:#e0f2fe">🌐</div>
+        <div class="node-label">Web App</div>
+        <div class="node-status">
+          <div class="node-status-dot" style="background:#10b981"></div>
+          <span>Active</span>
+        </div>
+      </div>
+
+      <!-- API Server -->
+      <div class="node-card" style="left:480px;top:220px;width:160px">
+        <div class="node-icon-wrap" style="background:#dcfce7">🖥</div>
+        <div class="node-label">API Server</div>
+        <div class="node-status">
+          <div class="node-status-dot" style="background:#10b981"></div>
+          <span>Active</span>
+        </div>
+      </div>
+
+      <!-- Auth Service -->
+      <div class="node-card" style="left:760px;top:290px;width:160px">
+        <div class="node-icon-wrap" style="background:#fef9c3">🔒</div>
+        <div class="node-label">Auth Service</div>
+        <div class="node-status">
+          <div class="node-status-dot" style="background:#f59e0b"></div>
+          <span>Idle</span>
+        </div>
+      </div>
+
+      <!-- SQL DB -->
+      <div class="node-card" style="left:760px;top:150px;width:160px">
+        <div class="node-icon-wrap" style="background:#dcfce7">🗄</div>
+        <div class="node-label">SQL Database</div>
+        <div class="node-status">
+          <div class="node-status-dot" style="background:#10b981"></div>
+          <span>Active</span>
+        </div>
+      </div>
+
+      <!-- LLM — SELECTED -->
+      <div class="node-card selected" style="left:1040px;top:220px;width:160px">
+        <div class="node-icon-wrap" style="background:#ede9fe">🧠</div>
+        <div class="node-label">LLM / AI Model</div>
+        <div class="node-status">
+          <div class="node-status-dot" style="background:#10b981"></div>
+          <span>Active</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Floating Tool Pill -->
+    <div class="tool-pill">
+      <button class="tool-btn">+</button>
+      <button class="tool-btn active">↖</button>
+      <button class="tool-btn">✋</button>
+      <div class="tool-divider"></div>
+      <button class="tool-btn">✂</button>
+      <button class="tool-btn">▭</button>
+      <button class="tool-btn">💬</button>
+      <div class="tool-divider"></div>
+      <button class="tool-btn">↩</button>
+      <button class="tool-btn">↪</button>
+      <div class="tool-divider"></div>
+      <button class="tool-btn">⚙</button>
+    </div>
+
+    <!-- Context Toolbar (appears when LLM node selected) -->
+    <div class="context-toolbar">
+      <button class="ctx-btn" title="Duplicate">⧉</button>
+      <button class="ctx-btn" title="Color">🎨</button>
+      <button class="ctx-btn" title="Icon">★</button>
+      <div class="ctx-sep"></div>
+      <button class="ctx-btn" title="Align">⊞</button>
+      <button class="ctx-btn" title="Link">🔗</button>
+      <div class="ctx-sep"></div>
+      <button class="ctx-btn" title="Delete" style="color:#ef4444">🗑</button>
+    </div>
+
+    <!-- Properties Drawer (slides in when node selected) -->
+    <div class="props-drawer">
+      <div class="props-title">Node Properties</div>
+
+      <div class="props-row">
+        <div class="props-label">Label</div>
+        <input class="props-input" value="LLM / AI Model" />
+      </div>
+
+      <div class="props-row">
+        <div class="props-label">Status</div>
+        <input class="props-input" value="Active" />
+      </div>
+
+      <div class="props-divider"></div>
+
+      <div class="props-row">
+        <div class="props-label">Color</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background:#06b6d4"></div>
+          <div class="color-swatch active" style="background:#8b5cf6"></div>
+          <div class="color-swatch" style="background:#10b981"></div>
+          <div class="color-swatch" style="background:#f59e0b"></div>
+          <div class="color-swatch" style="background:#ef4444"></div>
+          <div class="color-swatch" style="background:#3b82f6"></div>
+          <div class="color-swatch" style="background:#111"></div>
+        </div>
+      </div>
+
+      <div class="props-row">
+        <div class="props-label">Shape</div>
+        <input class="props-input" value="Rectangle" />
+      </div>
+
+      <div class="props-divider"></div>
+
+      <div class="props-row">
+        <div class="props-label">Notes</div>
+        <textarea class="props-input" rows="3" style="resize:none">GPT-4o inference endpoint via OpenAI API</textarea>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="bottombar">
+      <button class="feedback-btn">💬 Give feedback</button>
+      <div style="width:1px;height:16px;background:#e5e7eb"></div>
+      <div class="zoom-control">
+        <span>−</span>
+        <span style="font-weight:600">20%</span>
+        <span>+</span>
+        <span style="margin-left:4px;color:#9ca3af">▾</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

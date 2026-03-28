@@ -6,13 +6,10 @@
 
 // ── Lucide Icons ─────────────────────────────────────────────
 import {
-  Globe, Smartphone, Server, Key, Database, Zap, HardDrive,
+  Globe, Smartphone, Server, Database, Zap, HardDrive,
   Box, Layers, Table, FileSpreadsheet, Brain, Bot, Sparkles,
   Network, BookOpen, Search, Code, Split, Users, Webhook,
-  Container, Shield, Mail, Bell, BarChart, Settings, Cpu,
-  Cloud, Lock, GitBranch, Terminal, Workflow,
-  MessageSquare, Plug, RefreshCw, FolderOpen, Package,
-  AlertTriangle, CheckCircle, Activity, Eye, Filter
+  Container, Shield, Bell, BarChart, Lock, Activity,
 } from 'lucide-react';
 
 // ── Untitled UI Icons ─────────────────────────────────────
@@ -33,157 +30,157 @@ import {
 export const SMART_COMPONENTS = [
   {
     id: 'web-app', label: 'Web App',
-    keywords: ['web', 'frontend', 'browser', 'react', 'vue', 'next', 'angular', 'svelte', 'html', 'spa', 'pwa', 'website', 'portal'],
+    keywords: ['web app', 'frontend', 'browser', 'react app', 'vue app', 'next.js', 'angular', 'svelte', 'html', 'spa', 'pwa', 'website', 'portal', 'web client', 'web browser', 'web interface', 'web page'],
     lucideIcon: Globe, untitledIcon: Globe01, preferred: 'untitled',
     colorHint: '#06b6d4',
   },
   {
     id: 'mobile-app', label: 'Mobile App',
-    keywords: ['mobile', 'ios', 'android', 'phone', 'flutter', 'react native', 'swift', 'kotlin', 'app'],
+    keywords: ['mobile app', 'ios app', 'android app', 'mobile client', 'flutter', 'react native', 'swift', 'kotlin', 'mobile device', 'smartphone', 'tablet'],
     lucideIcon: Smartphone, untitledIcon: Phone01, preferred: 'untitled',
     colorHint: '#06b6d4',
   },
   {
     id: 'api-server', label: 'API Server',
-    keywords: ['api', 'rest', 'graphql', 'grpc', 'express', 'fastapi', 'django', 'ruby', 'rails', 'spring', 'nest', 'gateway', 'route', 'endpoint', 'microservice', 'backend'],
+    keywords: ['api server', 'api gateway', 'rest api', 'graphql', 'grpc', 'express', 'fastapi', 'django', 'rails', 'spring boot', 'nestjs', 'api endpoint', 'microservice', 'backend server', 'web server', 'http server', 'service layer', 'backend api'],
     lucideIcon: Server, untitledIcon: Server01, preferred: 'untitled',
     colorHint: '#10b981',
   },
   {
     id: 'auth', label: 'Auth Service',
-    keywords: ['auth', 'login', 'jwt', 'oauth', 'keycloak', 'identity', 'sso', 'saml', 'session', 'token', 'fingerprint', '2fa', 'mfa'],
+    keywords: ['auth service', 'authentication', 'authorization', 'login service', 'jwt', 'oauth', 'keycloak', 'identity provider', 'sso', 'saml', 'access token', 'refresh token', '2fa', 'mfa', 'user auth', 'sign in', 'signup'],
     lucideIcon: Lock, untitledIcon: Lock01, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'vector-db', label: 'Vector Database',
-    keywords: ['vector', 'pinecone', 'chroma', 'weaviate', 'qdrant', 'faiss', 'milvus', 'embedding store', 'ann'],
+    keywords: ['vector database', 'vector store', 'vector db', 'pinecone', 'chroma', 'weaviate', 'qdrant', 'faiss', 'milvus', 'embedding store', 'vector index', 'vector search'],
     lucideIcon: Database, untitledIcon: Database01, preferred: 'untitled',
     colorHint: '#8b5cf6',
   },
   {
     id: 'cache', label: 'Cache',
-    keywords: ['cache', 'redis', 'memcache', 'in-memory', 'cdn', 'varnish', 'hazelcast'],
+    keywords: ['cache', 'caching', 'redis', 'memcached', 'in-memory store', 'varnish', 'hazelcast', 'session cache', 'cache layer', 'cache store', 'memory cache'],
     lucideIcon: Zap, untitledIcon: Lightning01, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'storage', label: 'Storage',
-    keywords: ['storage', 's3', 'gcs', 'blob', 'file', 'object store', 'minio', 'drive', 'cdn', 'bucket'],
+    keywords: ['file storage', 'object storage', 's3 bucket', 'gcs bucket', 'blob storage', 'minio', 'cloud drive', 'file system', 'object store', 'cloud storage', 'media storage', 'static files', 'cdn storage'],
     lucideIcon: HardDrive, untitledIcon: UntHardDrive, preferred: 'untitled',
     colorHint: '#10b981',
   },
   {
     id: 'data-warehouse', label: 'Data Warehouse',
-    keywords: ['warehouse', 'snowflake', 'bigquery', 'redshift', 'analytics db', 'olap'],
+    keywords: ['data warehouse', 'snowflake', 'bigquery', 'redshift', 'analytics database', 'olap', 'data mart', 'dwh'],
     lucideIcon: Box, untitledIcon: Cube01, preferred: 'untitled',
     colorHint: '#3b82f6',
   },
   {
     id: 'data-lake', label: 'Data Lake',
-    keywords: ['data lake', 'hadoop', 'delta lake', 'lakehouse', 'spark', 'databricks'],
+    keywords: ['data lake', 'hadoop', 'delta lake', 'lakehouse', 'apache spark', 'databricks', 'data platform', 'raw data'],
     lucideIcon: Layers, untitledIcon: LayersTwo01, preferred: 'untitled',
     colorHint: '#3b82f6',
   },
   {
     id: 'sql-table', label: 'SQL Database',
-    keywords: ['sql', 'postgres', 'mysql', 'sqlite', 'mssql', 'database', 'db', 'rds', 'aurora', 'maria'],
+    keywords: ['sql database', 'postgres', 'mysql', 'sqlite', 'mssql', 'relational db', 'rds', 'aurora', 'mariadb', 'database', 'db', 'data store', 'relational database'],
     lucideIcon: Table, untitledIcon: UntTable, preferred: 'untitled',
     colorHint: '#10b981',
   },
   {
     id: 'csv-dataset', label: 'Dataset',
-    keywords: ['csv', 'dataset', 'spreadsheet', 'excel', 'parquet', 'jsonl', 'data file'],
+    keywords: ['dataset', 'csv file', 'spreadsheet', 'excel file', 'parquet', 'jsonl', 'data file', 'training data', 'raw dataset', 'data records'],
     lucideIcon: FileSpreadsheet, untitledIcon: FileCheck02, preferred: 'untitled',
     colorHint: '#10b981',
   },
   {
     id: 'llm', label: 'LLM / AI Model',
-    keywords: ['llm', 'gpt', 'claude', 'gemini', 'mistral', 'llama', 'language model', 'openai', 'anthropic', 'inference', 'generative', 'foundation model', 'ai model'],
+    keywords: ['llm', 'large language model', 'gpt-4', 'gpt-3', 'chatgpt', 'claude', 'gemini', 'mistral', 'llama', 'openai', 'anthropic', 'ai model', 'language model', 'foundation model', 'generative model', 'inference engine', 'text generation', 'completion api'],
     lucideIcon: Brain, untitledIcon: CpuChip01, preferred: 'untitled',
     colorHint: '#8b5cf6',
   },
   {
     id: 'ai-agent', label: 'AI Agent',
-    keywords: ['agent', 'autonomous', 'ai agent', 'bot', 'autopilot', 'crew', 'multi-agent', 'langchain', 'langgraph', 'autogpt'],
+    keywords: ['ai agent', 'autonomous agent', 'llm agent', 'chatbot', 'ai bot', 'autopilot', 'crew ai', 'multi-agent', 'langchain agent', 'langgraph', 'autogpt', 'agent loop', 'agentic', 'reasoning agent'],
     lucideIcon: Bot, untitledIcon: Stars01, preferred: 'untitled',
     colorHint: '#8b5cf6',
   },
   {
     id: 'embeddings', label: 'Embeddings',
-    keywords: ['embedding', 'encode', 'encoder', 'ada', 'text-embedding', 'sentence transformer', 'vector representation'],
+    keywords: ['embedding', 'embeddings', 'text embedding', 'vector embedding', 'sentence transformer', 'encoder model', 'ada embedding', 'embed', 'semantic vector', 'vector representation'],
     lucideIcon: Sparkles, untitledIcon: Beaker01, preferred: 'untitled',
     colorHint: '#ec4899',
   },
   {
     id: 'neural-network', label: 'Neural Network',
-    keywords: ['neural', 'deep learning', 'cnn', 'transformer', 'pytorch', 'tensorflow', 'keras', 'model'],
+    keywords: ['neural network', 'deep learning', 'cnn', 'rnn', 'lstm', 'transformer model', 'pytorch', 'tensorflow', 'keras', 'ml model', 'trained model', 'fine-tuned model', 'classification model'],
     lucideIcon: Network, untitledIcon: CpuChip02, preferred: 'untitled',
     colorHint: '#8b5cf6',
   },
   {
     id: 'knowledge-base', label: 'Knowledge Base',
-    keywords: ['knowledge', 'rag', 'document store', 'wiki', 'confluence', 'notion', 'kb', 'docs'],
+    keywords: ['knowledge base', 'rag', 'document store', 'wiki', 'confluence', 'notion', 'knowledge graph', 'documents', 'knowledge repo', 'document index', 'faq', 'knowledge hub'],
     lucideIcon: BookOpen, untitledIcon: BookOpen01, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'semantic-search', label: 'Search',
-    keywords: ['search', 'semantic search', 'elasticsearch', 'opensearch', 'solr', 'retrieval', 'query'],
+    keywords: ['semantic search', 'search engine', 'elasticsearch', 'opensearch', 'solr', 'retrieval', 'search index', 'full text search', 'similarity search', 'search service', 'search api', 'search query'],
     lucideIcon: Search, untitledIcon: SearchLg, preferred: 'untitled',
     colorHint: '#06b6d4',
   },
   {
     id: 'trainer', label: 'ML Trainer',
-    keywords: ['train', 'fine-tune', 'finetune', 'trainer', 'optimize', 'rlhf', 'mlops', 'wandb'],
+    keywords: ['ml trainer', 'fine-tuning', 'fine-tune', 'model training', 'training pipeline', 'rlhf', 'mlops', 'wandb', 'training job', 'model optimization', 'train loop'],
     lucideIcon: Code, untitledIcon: Code01, preferred: 'untitled',
     colorHint: '#10b981',
   },
   {
     id: 'pipeline', label: 'Pipeline',
-    keywords: ['pipeline', 'etl', 'orchestrat', 'airflow', 'prefect', 'dagster', 'queue', 'kafka', 'rabbitmq', 'workflow', 'stream', 'pubsub'],
+    keywords: ['pipeline', 'data pipeline', 'etl pipeline', 'orchestration', 'airflow', 'prefect', 'dagster', 'message queue', 'kafka', 'rabbitmq', 'event stream', 'pubsub', 'workflow engine', 'job queue', 'task queue', 'data flow'],
     lucideIcon: Split, untitledIcon: GitBranch01, preferred: 'untitled',
     colorHint: '#06b6d4',
   },
   {
     id: 'ui', label: 'User Interface',
-    keywords: ['user', 'form', 'dashboard', 'chat', 'notification', 'ui', 'ux', 'interface'],
+    keywords: ['user interface', 'ui component', 'dashboard', 'chat interface', 'web ui', 'admin panel', 'control panel', 'user portal', 'client ui', 'frontend ui', 'ui layer'],
     lucideIcon: Users, untitledIcon: Users01, preferred: 'untitled',
     colorHint: '#06b6d4',
   },
   {
     id: 'webhook', label: 'Webhook / Integration',
-    keywords: ['webhook', 'integration', 'third party', 'zapier', 'make', 'n8n', 'connector', 'plugin'],
+    keywords: ['webhook', 'third-party integration', 'zapier', 'make.com', 'n8n', 'connector', 'integration layer', 'external api', 'api connector', 'event hook', 'callback url'],
     lucideIcon: Webhook, untitledIcon: Link01, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'container', label: 'Container / Infra',
-    keywords: ['docker', 'container', 'kubernetes', 'k8s', 'pod', 'deploy', 'server', 'infra', 'cloud', 'aws', 'gcp', 'azure'],
+    keywords: ['docker container', 'kubernetes', 'k8s cluster', 'pod', 'deployment', 'cloud infra', 'aws', 'gcp', 'azure', 'infrastructure', 'compute instance', 'serverless', 'lambda function', 'cloud run'],
     lucideIcon: Container, untitledIcon: UntPackage, preferred: 'untitled',
     colorHint: '#3b82f6',
   },
   {
     id: 'monitoring', label: 'Monitoring',
-    keywords: ['monitor', 'observabilit', 'grafana', 'datadog', 'prometheus', 'logging', 'trace', 'alert'],
+    keywords: ['monitoring', 'observability', 'grafana', 'datadog', 'prometheus', 'log aggregation', 'distributed tracing', 'alert manager', 'uptime', 'health check', 'metrics collector', 'apm'],
     lucideIcon: Activity, untitledIcon: UntActivity, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'security', label: 'Security',
-    keywords: ['security', 'firewall', 'waf', 'vault', 'secrets', 'encrypt', 'ssl', 'tls', 'cert'],
+    keywords: ['security layer', 'firewall', 'waf', 'vault', 'secrets manager', 'encryption', 'ssl certificate', 'tls', 'api security', 'rate limiter', 'ddos protection', 'access control'],
     lucideIcon: Shield, untitledIcon: Shield01, preferred: 'untitled',
     colorHint: '#ef4444',
   },
   {
     id: 'notification', label: 'Notification',
-    keywords: ['email', 'sms', 'push', 'notification', 'sendgrid', 'twilio', 'ses', 'mailgun', 'bell'],
+    keywords: ['notification', 'email service', 'sms service', 'push notification', 'sendgrid', 'twilio', 'ses', 'mailgun', 'alert notification', 'messaging service', 'notification hub'],
     lucideIcon: Bell, untitledIcon: Bell01, preferred: 'untitled',
     colorHint: '#f59e0b',
   },
   {
     id: 'analytics', label: 'Analytics',
-    keywords: ['analytics', 'metrics', 'dashboard', 'report', 'segment', 'mixpanel', 'amplitude', 'insight'],
+    keywords: ['analytics', 'metrics', 'analytics dashboard', 'business intelligence', 'reporting', 'segment', 'mixpanel', 'amplitude', 'google analytics', 'insights', 'data analytics', 'usage tracking'],
     lucideIcon: BarChart, untitledIcon: BarChart01, preferred: 'untitled',
     colorHint: '#3b82f6',
   },
@@ -193,15 +190,21 @@ export const SMART_COMPONENTS = [
  * Auto-detect the best component definition for a given label/description
  */
 export function detectComponent(label) {
-  const lower = label.toLowerCase();
+  if (!label) return SMART_COMPONENTS[2];
+  const lower = label.toLowerCase().trim();
   let bestMatch = null;
   let bestScore = 0;
 
   for (const component of SMART_COMPONENTS) {
     let score = 0;
     for (const kw of component.keywords) {
-      if (lower.includes(kw)) {
-        score += kw.length; // longer keyword = more specific = higher weight
+      const kwLower = kw.toLowerCase();
+      if (lower === kwLower) {
+        score += kw.length * 4; // exact match
+      } else if (new RegExp(`\\b${kwLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(lower)) {
+        score += kw.length * 2; // word-boundary match
+      } else if (lower.includes(kwLower)) {
+        score += kw.length; // substring match
       }
     }
     if (score > bestScore) {
@@ -260,5 +263,5 @@ export const COMPONENT_CATEGORIES = [
 ];
 
 export function getComponentDetails(id) {
-  return SMART_COMPONENTS.find(c => c.id === id) || SMART_COMPONENTS[2];
+  return SMART_COMPONENTS.find(c => c.id === id) || null;
 }

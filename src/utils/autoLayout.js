@@ -40,7 +40,15 @@ export function getLayoutedElements(nodes, edges, direction = null) {
   });
 
   nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: NODE_WIDTH, height: NODE_HEIGHT });
+    const isHorizontal = node.data?.layout === 'horizontal';
+    const width = isHorizontal ? 340 : 220;
+    const height = isHorizontal ? 130 : 180;
+    
+    dagreGraph.setNode(node.id, { 
+      width, 
+      height,
+      rank: node.rank !== undefined ? node.rank : undefined 
+    });
   });
 
   edges.forEach((edge) => {
@@ -53,11 +61,15 @@ export function getLayoutedElements(nodes, edges, direction = null) {
 
   const layoutedNodes = nodes.map((node) => {
     const pos = dagreGraph.node(node.id);
+    const isHorizontal = node.data?.layout === 'horizontal';
+    const width = isHorizontal ? 340 : 220;
+    const height = isHorizontal ? 130 : 180;
+
     return {
       ...node,
       position: {
-        x: pos.x - NODE_WIDTH / 2,
-        y: pos.y - NODE_HEIGHT / 2,
+        x: pos.x - width / 2,
+        y: pos.y - height / 2,
       },
     };
   });

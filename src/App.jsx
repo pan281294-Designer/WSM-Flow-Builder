@@ -35,7 +35,7 @@ function FlowCanvas() {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [guides, setGuides] = useState([]);
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, undo, redo, copy, paste, duplicate, deleteSelected, saveProject, loadProject, past, future } = useFlowStore();
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, undo, redo, copy, paste, duplicate, deleteSelected, saveProject } = useFlowStore();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -134,7 +134,6 @@ function FlowCanvas() {
         connectionLineType="bezier"
         defaultEdgeOptions={{
           type: 'custom',
-          zIndex: 1000,
           data: { shape: 'bezier', stroke: 'solid', arrow: 'arrow', color: '#22d3ee', width: 2 }
         }}
         connectionRadius={30}
