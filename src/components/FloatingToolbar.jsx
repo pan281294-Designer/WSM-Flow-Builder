@@ -29,7 +29,7 @@ export default function FloatingToolbar() {
       
       {/* Title / Count */}
       <div className="px-3 py-1.5 border-r border-slate-100 dark:border-[#1e293b] mr-1">
-        <span className="text-[11px] font-black text-violet-600 dark:text-violet-400 uppercase tracking-tighter">
+        <span className="text-[11px] font-black text-[#155DFC] dark:text-[#155DFC] uppercase tracking-tighter">
           {selectedNodes.length} SELECTED
         </span>
       </div>
@@ -49,7 +49,7 @@ export default function FloatingToolbar() {
 
         <button 
           onClick={() => update({ fontWeight: first.fontWeight === 700 ? 500 : 700 })}
-          className={`p-1.5 rounded-lg transition-all ${first.fontWeight === 700 ? 'bg-violet-100 text-violet-600' : 'hover:bg-slate-100 text-slate-400'}`}
+          className={`p-1.5 rounded-lg transition-all ${first.fontWeight === 700 ? 'bg-[#155DFC]/10 text-[#155DFC]' : 'hover:bg-slate-100 text-slate-400'}`}
           title="Toggle Bold"
         >
           <Type size={16} strokeWidth={first.fontWeight === 700 ? 3 : 2} />
@@ -68,7 +68,7 @@ export default function FloatingToolbar() {
           <button
             key={s.id}
             onClick={() => update({ shape: s.id, radius: s.id === 'circle' ? 999 : (s.id === 'rectangle' ? 16 : 4) })}
-            className={`p-1.5 rounded-lg transition-all ${commonShape === s.id ? 'bg-violet-100 text-violet-600' : 'hover:bg-slate-100 text-slate-400'}`}
+            className={`p-1.5 rounded-lg transition-all ${commonShape === s.id ? 'bg-[#155DFC]/10 text-[#155DFC]' : 'hover:bg-slate-100 text-slate-400'}`}
             title={s.label}
           >
             <s.icon size={16} />
@@ -83,7 +83,7 @@ export default function FloatingToolbar() {
         <div className="flex flex-col items-center gap-0.5">
            <input 
              type="range" min="0" max="40" step="2"
-             className="w-16 h-1.5 bg-slate-100 dark:bg-[#1e293b] rounded-full appearance-none cursor-pointer accent-violet-500"
+             className="w-16 h-1.5 bg-slate-100 dark:bg-[#1e293b] rounded-full appearance-none cursor-pointer accent-[#155DFC]"
              value={first.radius || 16}
              onChange={(e) => update({ radius: parseInt(e.target.value) })}
            />

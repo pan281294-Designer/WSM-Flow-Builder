@@ -249,10 +249,12 @@ function NodeProperties({ nodeId }) {
             </Badge>
           </div>
           <Slider
-            min={0} max={60} step={2}
             value={[radiusValue]}
-            onValueChange={([val]) => upd('radius', val)}
-            className="[&_[role=slider]]:bg-violet-500 [&_[role=slider]]:border-violet-500"
+            min={0}
+            max={40}
+            step={1}
+            onValueChange={([v]) => upd('radius', v)}
+            className="[&_[role=slider]]:bg-[#155DFC] [&_[role=slider]]:border-[#155DFC]"
           />
         </div>
       </div>

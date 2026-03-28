@@ -121,7 +121,7 @@ html, body, #root {
   height: 12px !important;
   min-width: 12px !important;
   min-height: 12px !important;
-  background: var(--hc, #06b6d4) !important;
+  background: #155DFC !important;
   border: 2px solid white !important;
   border-radius: 50% !important;
   box-shadow: none !important;
@@ -164,4 +164,14 @@ html, body, #root {
   top: -12px;
   left: -12px;
   border-radius: 50%;
+}
+
+::selection {
+  background: #155DFC !important;
+  color: white !important;
+}
+
+::-moz-selection {
+  background: #155DFC !important;
+  color: white !important;
 }

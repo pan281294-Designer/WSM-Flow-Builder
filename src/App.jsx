@@ -319,7 +319,7 @@ export default function App() {
           </Tooltip>
 
           <Button variant="outline" size="sm" onClick={() => setIsUploadOpen(true)}
-            className="gap-1.5 text-xs font-semibold text-violet-600 dark:text-violet-400 border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-900/20 hover:bg-violet-100 dark:hover:bg-violet-900/30 hover:text-violet-700">
+            className="gap-1.5 text-xs font-semibold text-[#155DFC] dark:text-[#155DFC] border-[#155DFC]/20 dark:border-[#155DFC]/40 bg-[#155DFC]/5 dark:bg-[#155DFC]/10 hover:bg-[#155DFC]/10 dark:hover:bg-[#155DFC]/20 hover:text-[#155DFC]">
             <ImagePlus size={13} /> Image → Flow
           </Button>
 
