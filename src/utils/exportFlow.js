@@ -44,9 +44,16 @@ function iconToSVGString(details, customIcon, color) {
     if (!el) return null;
     
     return renderToStaticMarkup(el)
-      .replace(/currentColor/g, color) // Replace CSS variables with hard hex
-      .replace(/fill="none"/g, 'fill="none"') // Ensure fill is explicit
-      .replace(/<svg/, `<svg width="28" height="28" x="0" y="0"`);
+      .replace(/currentColor/g, color)
+      .replace(/<svg([^>]*)>/, (_, attrs) => {
+        // Strip any existing width/height/x/y so we don't duplicate them
+        const cleaned = attrs
+          .replace(/\s+width="[^"]*"/g, '')
+          .replace(/\s+height="[^"]*"/g, '')
+          .replace(/\s+x="[^"]*"/g, '')
+          .replace(/\s+y="[^"]*"/g, '');
+        return `<svg width="28" height="28" x="0" y="0"${cleaned}>`;
+      });
   } catch (e) {
     return null;
   }
