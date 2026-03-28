@@ -22,9 +22,9 @@ const IconDotted   = () => <svg width="22" height="8"  viewBox="0 0 22 8"  fill=
 const IconArrow    = () => <svg width="22" height="12" viewBox="0 0 22 12" fill="none"><line x1="0" y1="6" x2="16" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><path d="M13 2 L20 6 L13 10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>;
 const IconNoArrow  = () => <svg width="22" height="12" viewBox="0 0 22 12" fill="none"><line x1="2" y1="6" x2="20" y2="6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>;
 
+const IconRect     = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>;
+const IconCircle   = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/></svg>;
 const IconDiamond  = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l6.59 6.59a2.41 2.41 0 0 0 3.41 0l6.59-6.59a2.41 2.41 0 0 0 0-3.41l-6.59-6.59a2.41 2.41 0 0 0-3.41 0L2.7 10.3Z"/></svg>;
-const IconVertical = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M10 7h4M10 11h4M10 15h4"/></svg>;
-const IconHorizontal = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 10v4M11 10v4M15 10v4"/></svg>;
 
 function SectionLabel({ children }) {
   return <Label className="text-[10px] font-bold text-slate-400 dark:text-[#64748b] uppercase tracking-widest block mb-2">{children}</Label>;
@@ -229,18 +229,6 @@ function NodeProperties({ nodeId }) {
       {/* Shape & Style */}
       <div className="space-y-4">
         <div>
-          <SectionLabel>Layout</SectionLabel>
-          <ToggleGroup
-            value={node.data.layout || 'vertical'}
-            onChange={v => upd('layout', v)}
-            options={[
-              { key: 'vertical',   Icon: IconVertical,   title: 'Vertical'   },
-              { key: 'horizontal', Icon: IconHorizontal, title: 'Horizontal' },
-            ]}
-          />
-        </div>
-
-        <div>
           <SectionLabel>Shape</SectionLabel>
           <ToggleGroup
             value={node.data.shape || 'rectangle'}
@@ -253,68 +241,18 @@ function NodeProperties({ nodeId }) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <SectionLabel>Corner Radius</SectionLabel>
-              <span className="text-[10px] font-bold text-slate-400">{radiusValue}px</span>
-            </div>
-            <Slider
-              min={0} max={60} step={2}
-              value={[radiusValue]}
-              onValueChange={([val]) => upd('radius', val)}
-              className="[&_[role=slider]]:bg-violet-500 [&_[role=slider]]:border-violet-500"
-            />
-          </div>
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <SectionLabel>Icon Radius</SectionLabel>
-              <span className="text-[10px] font-bold text-slate-400">{node.data.iconRadius ?? 18}px</span>
-            </div>
-            <Slider
-              min={0} max={32} step={2}
-              value={[node.data.iconRadius ?? 18]}
-              onValueChange={([val]) => upd('iconRadius', val)}
-              className="[&_[role=slider]]:bg-violet-500 [&_[role=slider]]:border-violet-500"
-            />
-          </div>
-        </div>
-
         <div>
-          <SectionLabel>Border Style</SectionLabel>
-          <ToggleGroup
-            value={node.data.borderStyle || 'solid'}
-            onChange={v => upd('borderStyle', v)}
-            options={[
-              { key: 'solid',  Icon: IconSolid,  title: 'Solid'  },
-              { key: 'dashed', Icon: IconDashed, title: 'Dashed' },
-              { key: 'dotted', Icon: IconDotted, title: 'Dotted' },
-            ]}
-          />
-        </div>
-
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <SectionLabel>Border Width</SectionLabel>
-            <span className="text-[10px] font-bold text-slate-400">{node.data.borderWidth ?? 1.5}px</span>
+          <div className="flex items-center justify-between mb-3">
+            <SectionLabel>Corner Radius</SectionLabel>
+            <Badge variant="secondary" className="text-[10px] font-bold px-2 py-0.5 dark:bg-[#1e2330] dark:text-slate-400">
+              {radiusValue}px
+            </Badge>
           </div>
           <Slider
-            min={0} max={10} step={0.5}
-            value={[node.data.borderWidth ?? 1.5]}
-            onValueChange={([val]) => upd('borderWidth', val)}
+            min={0} max={60} step={2}
+            value={[radiusValue]}
+            onValueChange={([val]) => upd('radius', val)}
             className="[&_[role=slider]]:bg-violet-500 [&_[role=slider]]:border-violet-500"
-          />
-        </div>
-
-        <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-xl">
-          <div className="space-y-0.5">
-            <Label className="text-[12px] font-bold text-slate-700 dark:text-[#e2e8f0]">Glass Background</Label>
-            <p className="text-[10px] text-slate-400">Use semi-transparent theme color</p>
-          </div>
-          <Switch
-            checked={!!node.data.bgColor}
-            onCheckedChange={(checked) => upd('bgColor', checked ? `${color}0D` : null)}
-            className="data-[state=checked]:bg-violet-500"
           />
         </div>
       </div>
