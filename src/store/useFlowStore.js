@@ -34,6 +34,12 @@ export const useFlowStore = create((set, get) => ({
   selectedEdgeId: null,
   setSelectedEdgeId: (id) => set({ selectedEdgeId: id }),
 
+  // Panel Visibility
+  isSidebarOpen: true,
+  isPropertiesOpen: true,
+  toggleSidebar: () => set({ isSidebarOpen: !get().isSidebarOpen }),
+  toggleProperties: () => set({ isPropertiesOpen: !get().isPropertiesOpen }),
+
   // Update a specific edge's data
   updateEdgeData: (id, data) => {
     get()._pushHistory();

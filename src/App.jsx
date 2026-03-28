@@ -6,7 +6,7 @@ import ReactFlow, {
   ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { Sun, Moon, Download, Sparkles, LayoutTemplate, Copy, Clipboard, Trash2, ImagePlus, Undo2, ChevronDown, Check, FileCode2, CornerUpRight, Save, FolderOpen } from 'lucide-react';
+import { Sun, Moon, Download, Sparkles, LayoutTemplate, Copy, Clipboard, Trash2, ImagePlus, Undo2, ChevronDown, Check, FileCode2, CornerUpRight, Save, FolderOpen, PanelLeft, PanelRight } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import { Separator } from './components/ui/separator';
@@ -170,7 +170,7 @@ export default function App() {
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { nodes, edges, setNodes, setEdges, copy, paste, duplicate, deleteSelected, undo, redo, past, saveProject, loadProject } = useFlowStore();
+  const { nodes, edges, setNodes, setEdges, copy, paste, duplicate, deleteSelected, undo, redo, past, saveProject, loadProject, isSidebarOpen, isPropertiesOpen, toggleSidebar, toggleProperties } = useFlowStore();
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
@@ -217,8 +217,19 @@ export default function App() {
       <TooltipProvider delayDuration={400}>
       <div className="h-14 border-b border-slate-200 dark:border-[#1e2330] bg-white dark:bg-[#0d1017] flex items-center justify-between px-5 z-30 shadow-sm relative transition-colors">
         <div className="font-bold text-lg flex items-center gap-3">
-          <span className="bg-[#155DFC] text-white px-2.5 py-1 rounded-md text-sm font-extrabold shadow-inner leading-relaxed">WSM</span>
-          <span className="tracking-tight text-slate-800 dark:text-white font-medium">Flow Builder</span>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={toggleSidebar}
+                className={`h-8 w-8 transition-colors ${isSidebarOpen ? 'text-[#155DFC]' : 'text-slate-400'}`}>
+                <PanelLeft size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{isSidebarOpen ? 'Hide Sidebar' : 'Show Sidebar'}</TooltipContent>
+          </Tooltip>
+          <div className="flex items-center gap-2.5">
+            <span className="bg-[#155DFC] text-white px-2.5 py-1 rounded-md text-sm font-extrabold shadow-inner leading-relaxed">WSM</span>
+            <span className="tracking-tight text-slate-800 dark:text-white font-medium">Flow Builder</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-1.5">
@@ -361,6 +372,16 @@ export default function App() {
             <TooltipContent>Toggle theme</TooltipContent>
           </Tooltip>
 
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost" size="icon" onClick={toggleProperties}
+                className={`h-8 w-8 transition-colors ${isPropertiesOpen ? 'text-[#155DFC]' : 'text-slate-400'}`}>
+                <PanelRight size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{isPropertiesOpen ? 'Hide Properties' : 'Show Properties'}</TooltipContent>
+          </Tooltip>
+
           <Separator orientation="vertical" className="h-5 mx-1 dark:bg-[#30363d]" />
 
           <Button onClick={() => setIsAIModalOpen(true)}
@@ -372,11 +393,11 @@ export default function App() {
       </TooltipProvider>
 
       <div className="flex-1 flex flex-row relative h-[calc(100vh-56px)]">
-        <Sidebar />
+        {isSidebarOpen && <Sidebar />}
         <ReactFlowProvider>
           <FlowCanvas />
         </ReactFlowProvider>
-        <PropertiesPanel />
+        {isPropertiesOpen && <PropertiesPanel />}
       </div>
 
       <AIConnectModal isOpen={isAIModalOpen} onClose={() => setIsAIModalOpen(false)} />
