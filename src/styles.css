@@ -1,0 +1,167 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── shadcn/ui CSS Variables ────────────────────────────── */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --shadcn-accent: oklch(0.97 0 0);
+  --shadcn-accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --shadcn-border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --shadcn-accent: oklch(0.269 0 0);
+  --shadcn-accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --shadcn-border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--shadcn-border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--shadcn-border);
+  }
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Multi-select drag box */
+.react-flow__selection {
+  background: rgba(37, 99, 235, 0.08) !important;
+  border: 1px dashed #2563eb !important;
+}
+
+/* Smooth drag opacity */
+.react-flow__node {
+  cursor: grab;
+}
+.react-flow__node:active {
+  cursor: grabbing;
+}
+
+/* ── Edges always on top of cards (n8n style) ───────────── */
+/* Raise the whole edge layer above the node layer */
+.react-flow__edges {
+  z-index: 1001 !important;
+  /* Layer itself doesn't capture clicks so nodes remain draggable */
+  pointer-events: none !important;
+}
+
+/* Individual edge paths DO respond to clicks (select / delete) */
+.react-flow__edge {
+  pointer-events: all !important;
+}
+
+/* Connection line while drawing (also keep on top) */
+.react-flow__connection {
+  z-index: 1002 !important;
+  pointer-events: none !important;
+}
+
+/* ── Node handles ── hidden by default, shown on hover/select via CSS */
+.node-handle {
+  width: 12px !important;
+  height: 12px !important;
+  min-width: 12px !important;
+  min-height: 12px !important;
+  background: var(--hc, #06b6d4) !important;
+  border: 2px solid white !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  /* Hidden by default */
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.15s ease, transform 0.15s ease !important;
+  z-index: 20 !important;
+}
+
+.dark .node-handle {
+  border-color: #131720 !important;
+}
+
+/* Show handles on node hover */
+.react-flow__node:hover .node-handle {
+  opacity: 1 !important;
+  pointer-events: all !important;
+  cursor: crosshair !important;
+}
+
+/* Show handles when node is selected */
+.react-flow__node.selected .node-handle {
+  opacity: 1 !important;
+  pointer-events: all !important;
+  cursor: crosshair !important;
+}
+
+/* Handle hover scale */
+.node-handle:hover {
+  transform: scale(1.25) !important;
+}
+
+/* Invisible larger hit area */
+.node-handle::before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: -12px;
+  left: -12px;
+  border-radius: 50%;
+}
