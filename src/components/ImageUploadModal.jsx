@@ -95,7 +95,7 @@ export default function ImageUploadModal({ isOpen, onClose }) {
         sourceHandle: e.sourceHandle || defaultSource,
         targetHandle: e.targetHandle || defaultTarget,
         data: {
-          shape: 'bezier',
+          shape: 'smoothstep',
           stroke: 'solid',
           arrow: 'arrow',
           color: '#155DFC',
