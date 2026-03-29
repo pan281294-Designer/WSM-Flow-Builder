@@ -25,7 +25,12 @@ export default function UniversalNode({ id, data, selected }) {
       // Iconify: stored as "prefix:name"
       if (data.customIcon.includes(':')) return <Icon icon={data.customIcon} width={28} color={color} />;
       // Lucide: stored as plain name
-      const L = LucideIcons[data.customIcon];
+      let L = LucideIcons[data.customIcon];
+      if (!L) {
+        // AI sometimes returns lowercase or kebab-case ("shield", "file-text")
+        const pascalCase = data.customIcon.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+        L = LucideIcons[pascalCase] || LucideIcons[data.customIcon.charAt(0).toUpperCase() + data.customIcon.slice(1)];
+      }
       if (L) return <L size={28} color={color} strokeWidth={1.5} />;
     }
     if (details?.preferred === 'untitled' && details.untitledIcon) {

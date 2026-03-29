@@ -1,7 +1,7 @@
 import dagre from 'dagre';
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 180;
+const NODE_WIDTH = 260;
+const NODE_HEIGHT = 220;
 
 /**
  * Smart Auto Layout Engine
@@ -23,11 +23,11 @@ export function getLayoutedElements(nodes, edges, direction = null) {
   // Adaptive spacing: give more room for larger graphs
   const count = nodes.length;
   const nodesep = layoutDirection === 'LR'
-    ? Math.max(80, 150 - count * 4)
-    : Math.max(80, 170 - count * 4);
+    ? Math.max(100, 160 - count * 2)
+    : Math.max(100, 160 - count * 2);
   const ranksep = layoutDirection === 'LR'
-    ? Math.max(180, 280 - count * 6)
-    : Math.max(130, 200 - count * 5);
+    ? Math.max(200, 300 - count * 4)
+    : Math.max(160, 240 - count * 4);
 
   dagreGraph.setGraph({
     rankdir: layoutDirection,
