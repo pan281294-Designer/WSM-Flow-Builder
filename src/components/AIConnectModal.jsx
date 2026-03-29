@@ -29,8 +29,8 @@ export default function AIConnectModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm">
-      <div className="bg-white dark:bg-[#0f1117] rounded-2xl w-[500px] shadow-2xl border border-slate-200 dark:border-[#1e2330] overflow-hidden transition-colors">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 dark:bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-[#0f1117] rounded-2xl w-[500px] shadow-2xl border border-slate-200 dark:border-[#1e2330] overflow-hidden transition-colors animate-in zoom-in-95 duration-200">
         <div className="p-6 border-b border-slate-100 dark:border-[#1e2330] flex items-center justify-between bg-slate-50 dark:bg-[#161b22] transition-colors">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-lg">
