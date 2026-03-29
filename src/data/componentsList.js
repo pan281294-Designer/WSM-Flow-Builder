@@ -221,43 +221,43 @@ export const COMPONENT_CATEGORIES = [
   {
     id: 'client', name: 'CLIENT',
     items: SMART_COMPONENTS.filter(c => ['web-app','mobile-app'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-cyan-600 dark:text-cyan-400`, iconBg: `bg-cyan-100 dark:bg-[#142939]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'backend', name: 'BACKEND',
     items: SMART_COMPONENTS.filter(c => ['api-server','auth','security'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-emerald-600 dark:text-emerald-400`, iconBg: `bg-emerald-100 dark:bg-[#112d26]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'data-storage', name: 'DATA & STORAGE',
     items: SMART_COMPONENTS.filter(c => ['vector-db','cache','storage','data-warehouse','data-lake','sql-table','csv-dataset'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-emerald-600 dark:text-emerald-400`, iconBg: `bg-emerald-100 dark:bg-[#112d26]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'core-ai-ml', name: 'CORE AI / ML',
     items: SMART_COMPONENTS.filter(c => ['llm','ai-agent','embeddings','neural-network'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-violet-600 dark:text-violet-400`, iconBg: `bg-violet-100 dark:bg-[#1a1535]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'knowledge', name: 'KNOWLEDGE & RETRIEVAL',
     items: SMART_COMPONENTS.filter(c => ['knowledge-base','semantic-search'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-amber-600 dark:text-amber-400`, iconBg: `bg-amber-100 dark:bg-[#2d1f0a]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'pipelines', name: 'PIPELINES & FLOW',
     items: SMART_COMPONENTS.filter(c => ['pipeline','trainer'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-cyan-600 dark:text-cyan-400`, iconBg: `bg-cyan-100 dark:bg-[#142939]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
   {
     id: 'integration', name: 'INTEGRATION & INFRA',
     items: SMART_COMPONENTS.filter(c => ['ui','webhook','container','monitoring','notification','analytics'].includes(c.id)).map(c => ({
-      ...c, icon: c.untitledIcon, iconColor: `text-blue-600 dark:text-blue-400`, iconBg: `bg-blue-100 dark:bg-[#0f1f3d]`
+      ...c, icon: c.untitledIcon, iconColor: `text-[#155DFC]`, iconBg: `bg-[#155DFC]/10`
     }))
   },
 ];

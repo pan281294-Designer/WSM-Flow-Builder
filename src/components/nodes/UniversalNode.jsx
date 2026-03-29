@@ -57,8 +57,8 @@ export default function UniversalNode({ id, data, selected }) {
   const radius = data.radius !== undefined ? `${data.radius}px` : (shape === 'circle' ? '50%' : '16px');
   
   const nodeStyle = {
-    borderColor: selected ? color : undefined,
-    boxShadow: selected ? `0 0 0 3px ${color}33, 0 4px 12px rgba(0,0,0,0.08)` : undefined,
+    borderColor: selected ? '#155DFC' : undefined,
+    boxShadow: selected ? `0 0 0 3px #155DFC33, 0 4px 12px rgba(0,0,0,0.08)` : undefined,
     borderRadius: radius,
   };
 
@@ -70,6 +70,7 @@ export default function UniversalNode({ id, data, selected }) {
 
   return (
     <div
+      data-id={id}
       className={`universal-node flex flex-col items-center justify-center bg-white dark:bg-[#131720] border transition-all duration-150 p-4 relative 
         ${shape === 'diamond' ? 'rotate-45 w-[180px] h-[180px]' : (shape === 'circle' ? 'w-[180px] h-[180px]' : 'w-[200px] min-h-[170px]')}
         ${selected ? 'border-[2px] shadow-md' : 'border-[1.5px] border-slate-200 dark:border-[#1e293b] shadow-sm'}
@@ -100,12 +101,14 @@ export default function UniversalNode({ id, data, selected }) {
         </div>
 
         {/* Status */}
-        <div className="flex items-center gap-1.5 mt-auto">
-          <div className="w-[7px] h-[7px] rounded-full" style={{ backgroundColor: statusColor }} />
-          <span className="text-slate-400 dark:text-[#64748b] text-[10px] font-bold tracking-wider uppercase">
-            {status}
-          </span>
-        </div>
+        {status !== 'None' && (
+          <div className="flex items-center gap-1.5 mt-auto">
+            <div className="w-[7px] h-[7px] rounded-full" style={{ backgroundColor: statusColor }} />
+            <span className="text-slate-400 dark:text-[#64748b] text-[10px] font-bold tracking-wider uppercase">
+              {status}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

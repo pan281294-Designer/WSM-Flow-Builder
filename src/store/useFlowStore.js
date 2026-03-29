@@ -105,7 +105,11 @@ export const useFlowStore = create((set, get) => ({
 
   addNode: (node) => {
     get()._pushHistory();
-    set({ nodes: ensureInteractive([...get().nodes, node]) });
+    const newNode = {
+      ...node,
+      id: node.id || crypto.randomUUID(),
+    };
+    set({ nodes: ensureInteractive([...get().nodes, newNode]) });
   },
 
   // ── Multi-select / Bulk Edit ─────────────────────────────────────────────
@@ -131,11 +135,13 @@ export const useFlowStore = create((set, get) => ({
       const saved = localStorage.getItem("wsm-flow-project");
       if (!saved) return false;
       const data = JSON.parse(saved);
+      if (!data.nodes) return false;
+      
       get()._pushHistory();
       set({ 
         nodes: ensureInteractive(data.nodes || []), 
         edges: data.edges || [],
-        future: [], // Reset future on manual load
+        future: [], 
       });
       return true;
     } catch (e) {
@@ -158,7 +164,7 @@ export const useFlowStore = create((set, get) => ({
         ...connection,
         type: 'custom',
         zIndex: 1000,
-        data: { shape: 'bezier', stroke: 'solid', arrow: 'arrow', color: '#22d3ee', width: 2 }
+        data: { shape: 'bezier', stroke: 'solid', arrow: 'arrow', color: '#155DFC', width: 2 }
       }, get().edges),
     });
   },
@@ -209,6 +215,15 @@ export const useFlowStore = create((set, get) => ({
     set({
       nodes: get().nodes.filter(n => !ids.has(n.id)),
       edges: get().edges.filter(e => !ids.has(e.source) && !ids.has(e.target)),
+    });
+  },
+
+  deselectAll: () => {
+    set({
+      selectedNodeId: null,
+      selectedEdgeId: null,
+      nodes: get().nodes.map(n => ({ ...n, selected: false })),
+      edges: get().edges.map(e => ({ ...e, selected: false })),
     });
   },
 }));

@@ -29,7 +29,7 @@ export default function Sidebar() {
   })).filter(category => category.items.length > 0 || searchTerm === '');
 
   return (
-    <div className="w-[300px] flex flex-col h-full bg-slate-50 dark:bg-[#0d1017] border-r border-slate-200 dark:border-[#1e2330] z-10 font-sans text-sm selection:bg-cyan-200 dark:selection:bg-cyan-900 overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.05)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.5)] transition-colors">
+    <div className="w-[300px] flex flex-col h-full bg-slate-50 dark:bg-[#0d1017] border-r border-slate-200 dark:border-[#1e2330] z-10 font-sans text-sm selection:bg-[#155DFC]/20 overflow-hidden shadow-[4px_0_24px_rgba(0,0,0,0.05)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.5)] transition-colors">
       {/* Header */}
       <div className="p-4 flex-shrink-0 bg-white dark:bg-[#0d1017] transition-colors">
          <h2 className="text-slate-800 dark:text-[#f8fafc] font-semibold text-[16px] mb-3">Components</h2>
@@ -38,7 +38,7 @@ export default function Sidebar() {
            <Input
              value={searchTerm}
              onChange={(e) => setSearchTerm(e.target.value)}
-             className="bg-slate-100 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] focus-visible:border-cyan-500 focus-visible:ring-cyan-500 pl-9 text-slate-700 dark:text-[#e2e8f0] text-[13px] placeholder:text-slate-400 dark:placeholder:text-[#64748b]"
+             className="bg-slate-100 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] focus-visible:border-[#155DFC] focus-visible:ring-[#155DFC] pl-9 text-slate-700 dark:text-[#e2e8f0] text-[13px] placeholder:text-slate-400 dark:placeholder:text-[#64748b]"
              placeholder="Search components..."
            />
          </div>

@@ -46,7 +46,7 @@ function ToolBtn({ active, title, children, onClick }) {
       onClick={onClick}
       className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-100
         ${active
-          ? 'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300'
+          ? 'bg-[#155DFC]/10 text-[#155DFC]'
           : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#22272e] hover:text-slate-800 dark:hover:text-slate-100'
         }`}
     >
@@ -76,8 +76,8 @@ export default function CustomEdge(props) {
   const shape  = data.shape  || 'bezier';
   const stroke = data.stroke || 'solid';
   const arrow  = data.arrow  || 'arrow';
-  const color  = selected ? '#6366f1' : '#cbd5e1';
-  const width  = 1.8;
+  const color  = selected ? '#155DFC' : '#cbd5e1';
+  const width  = data.width || 2;
 
   const [edgePath, labelX, labelY] = buildPath(shape, props);
   const dashArray = STROKES.find(s => s.key === stroke)?.dash;
@@ -149,7 +149,7 @@ export default function CustomEdge(props) {
                 <div 
                   className={`px-4 py-1.5 rounded-full border-2 transition-all cursor-text text-[13px] font-bold shadow-sm whitespace-nowrap
                     ${styles.bg} ${styles.border} ${styles.text} ${styles.shadow}
-                    ${selected ? '!border-violet-500 !text-violet-700 dark:!text-violet-300' : ''}
+                    ${selected ? '!border-[#155DFC] !text-[#155DFC] dark:!text-[#155DFC]' : ''}
                   `}
                   style={{ backgroundColor: 'inherit' }}
                 >

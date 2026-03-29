@@ -20,8 +20,8 @@ export default function AIConnectModal({ isOpen, onClose }) {
         { id: 'ai-3', type: 'universal', data: { componentId: 'llm', label: 'Core AI Model' }, position: { x: 700, y: 300 } },
       ]);
       setEdges([
-        { id: 'e1-2', source: 'ai-1', target: 'ai-2', type: 'smoothstep', animated: true, zIndex: 1000, style: { stroke: '#22d3ee', strokeWidth: 2, strokeDasharray: '5 5' } },
-        { id: 'e2-3', source: 'ai-2', target: 'ai-3', type: 'smoothstep', animated: true, zIndex: 1000, style: { stroke: '#22d3ee', strokeWidth: 2, strokeDasharray: '5 5' } },
+        { id: 'e1-2', source: 'ai-1', target: 'ai-2', type: 'smoothstep', animated: true, zIndex: 1000, style: { stroke: '#155DFC', strokeWidth: 2, strokeDasharray: '5 5' } },
+        { id: 'e2-3', source: 'ai-2', target: 'ai-3', type: 'smoothstep', animated: true, zIndex: 1000, style: { stroke: '#155DFC', strokeWidth: 2, strokeDasharray: '5 5' } },
       ]);
       setIsGenerating(false);
       onClose();
@@ -34,9 +34,12 @@ export default function AIConnectModal({ isOpen, onClose }) {
         <div className="p-6 border-b border-slate-100 dark:border-[#1e2330] flex items-center justify-between bg-slate-50 dark:bg-[#161b22] transition-colors">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-slate-100 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-lg">
-              <Sparkles className="text-cyan-600 dark:text-cyan-400" size={20} />
+              <Sparkles className="text-[#155DFC]" size={20} />
             </div>
-            <h2 className="text-lg font-bold text-slate-800 dark:text-white">Generate AI Flow</h2>
+            <div>
+              <h2 className="text-slate-900 dark:text-white font-bold text-xl tracking-tight leading-none mb-1">AI Connect</h2>
+              <p className="text-slate-500 dark:text-[#64748b] text-[13px] font-medium italic">Transform your vision into flows</p>
+            </div>
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:text-[#64748b] dark:hover:text-white transition-colors">
              <X size={20} />
@@ -48,7 +51,7 @@ export default function AIConnectModal({ isOpen, onClose }) {
             <label className="block text-[13px] font-semibold text-slate-700 dark:text-[#94a3b8] mb-2">Describe your workflow</label>
             <textarea 
               autoFocus
-              className="w-full h-32 px-4 py-3 bg-white dark:bg-[#06080d] border border-slate-200 dark:border-[#1e2330] rounded-xl text-sm shadow-inner focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all text-slate-800 dark:text-[#e2e8f0] resize-none font-medium placeholder-slate-400 dark:placeholder-[#475569]"
+              className="w-full h-32 px-4 py-3 bg-white dark:bg-[#06080d] border border-slate-200 dark:border-[#1e2330] rounded-xl text-sm shadow-inner focus:outline-none focus:border-[#155DFC] focus:ring-1 focus:ring-[#155DFC] transition-all text-slate-800 dark:text-[#e2e8f0] resize-none font-medium placeholder-slate-400 dark:placeholder-[#475569]"
               placeholder="e.g. Build an AI customer support bot connected to a high-capacity vector database..."
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}

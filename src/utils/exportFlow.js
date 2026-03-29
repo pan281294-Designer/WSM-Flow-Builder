@@ -6,9 +6,10 @@ import { getBezierPath, getStraightPath, getSmoothStepPath } from 'reactflow';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import * as LucideIcons from 'lucide-react';
+import * as UntitledIcons from '@untitledui/icons';
 import { getComponentDetails } from '../data/componentsList';
 import download from 'downloadjs';
-import { toPng, toSvg } from 'html-to-image';
+import { toPng } from 'html-to-image';
 
 const NODE_W = 200, NODE_H = 170;
 
@@ -28,13 +29,35 @@ function buildEdgePath(shape, p) {
 }
 
 // ── Get icon SVG string and fix it for external tools ────────────────────────
-function iconToSVGString(details, customIcon, color) {
+function iconToSVGString(details, customIcon, color, nodeId, iconMap) {
   try {
-    if (customIcon && customIcon.includes(':')) return null;
+    // 1. Priority: Scraped DOM SVG (handles Iconify, custom SVGs, etc.)
+    if (iconMap && iconMap[nodeId]) {
+      return iconMap[nodeId]
+        .replace(/currentColor/g, color)
+        .replace(/<svg([^>]*)>/, (_, attrs) => {
+           const cleaned = attrs
+            .replace(/\s+width="[^"]*"/g, '')
+            .replace(/\s+height="[^"]*"/g, '')
+            .replace(/\s+x="[^"]*"/g, '')
+            .replace(/\s+y="[^"]*"/g, '');
+          return `<svg width="28" height="28" x="0" y="0"${cleaned}>`;
+        });
+    }
 
+    // 2. Fallback: Static reconstruction (Lucide / Untitled)
     let el;
-    if (customIcon && LucideIcons[customIcon]) {
-      el = createElement(LucideIcons[customIcon], { size: 28, stroke: color, strokeWidth: 1.5 });
+    if (customIcon) {
+      if (customIcon.startsWith('untitled:')) {
+        const name = customIcon.slice(9);
+        if (UntitledIcons[name]) {
+          el = createElement(UntitledIcons[name], { size: 28, stroke: color, strokeWidth: 1.5 });
+        }
+      } else if (LucideIcons[customIcon]) {
+        el = createElement(LucideIcons[customIcon], { size: 28, stroke: color, strokeWidth: 1.5 });
+      }
+    } else if (details.preferred === 'untitled' && details.untitledIcon) {
+      el = createElement(details.untitledIcon, { size: 28, stroke: color, strokeWidth: 1.5 });
     } else if (details.preferred === 'hero' && details.heroIcon) {
       el = createElement(details.heroIcon, { style: { width: 28, height: 28, color }, strokeWidth: 1.5 });
     } else if (details.lucideIcon) {
@@ -46,7 +69,6 @@ function iconToSVGString(details, customIcon, color) {
     return renderToStaticMarkup(el)
       .replace(/currentColor/g, color)
       .replace(/<svg([^>]*)>/, (_, attrs) => {
-        // Strip any existing width/height/x/y so we don't duplicate them
         const cleaned = attrs
           .replace(/\s+width="[^"]*"/g, '')
           .replace(/\s+height="[^"]*"/g, '')
@@ -70,7 +92,7 @@ const EXPORT_COLORS = {
 };
 
 // ── Main: build vector SVG ───────────────────────────────────────────────────
-export function buildVectorSVG(nodes, edges) {
+export function buildVectorSVG(nodes, edges, iconMap = null) {
   const PAD = 80;
   if (!nodes.length) return '';
 
@@ -147,7 +169,7 @@ export function buildVectorSVG(nodes, edges) {
     const status = data.status || 'Active';
     const statusColor = STATUS_MAP[status] || STATUS_MAP.Active;
 
-    const iconStr = iconToSVGString(details, data.customIcon, color);
+    const iconStr = iconToSVGString(details, data.customIcon, color, node.id, iconMap);
     
     // Icon centering
     const iconEmbed = iconStr ? `<g transform="translate(${x + NODE_W/2 - 14}, ${y + 34})">${iconStr}</g>` : '';
@@ -185,13 +207,13 @@ export function buildVectorSVG(nodes, edges) {
 </svg>`;
 }
 
-export function downloadVectorSVG(nodes, edges) {
-  const svg = buildVectorSVG(nodes, edges);
+export function downloadVectorSVG(nodes, edges, iconMap = null) {
+  const svg = buildVectorSVG(nodes, edges, iconMap);
   download(svg, 'wsm-flow-diagram.svg', 'image/svg+xml');
 }
 
-export async function copyVectorSVG(nodes, edges) {
-  const svg = buildVectorSVG(nodes, edges);
+export async function copyVectorSVG(nodes, edges, iconMap = null) {
+  const svg = buildVectorSVG(nodes, edges, iconMap);
   try { await navigator.clipboard.writeText(svg); return true; } catch { return false; }
 }
 

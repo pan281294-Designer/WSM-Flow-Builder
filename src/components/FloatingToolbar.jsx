@@ -37,7 +37,7 @@ export default function FloatingToolbar() {
       {/* Typography group */}
       <div className="flex items-center gap-1 px-1">
         <select 
-          className="bg-transparent text-[12px] font-bold text-slate-700 dark:text-[#e2e8f0] outline-none cursor-pointer hover:text-violet-500 transition-colors"
+          className="bg-transparent text-[12px] font-bold text-slate-700 dark:text-[#e2e8f0] outline-none cursor-pointer hover:text-[#155DFC] transition-colors"
           value={commonSize}
           onChange={(e) => update({ fontSize: parseInt(e.target.value) })}
         >

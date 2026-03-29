@@ -119,7 +119,7 @@ export default function IconPicker({ currentIcon, onSelect, color = '#06b6d4' })
       <label className="text-[12px] font-semibold text-slate-500 dark:text-[#94a3b8] block mb-2">Icon</label>
       <button
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center gap-3 px-3 py-2.5 bg-slate-50 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-lg text-sm hover:border-cyan-400 transition-colors"
+        className="w-full flex items-center gap-3 px-3 py-2.5 bg-slate-50 dark:bg-[#161b22] border border-slate-200 dark:border-[#30363d] rounded-lg text-sm hover:border-[#155DFC] transition-colors"
       >
         {currentIcon ? (
           currentIcon.startsWith('untitled:')
@@ -143,7 +143,7 @@ export default function IconPicker({ currentIcon, onSelect, color = '#06b6d4' })
               <button
                 key={t}
                 onClick={() => { setTab(t); setQuery(''); }}
-                className={`flex-1 py-2 text-[11px] font-semibold transition-colors ${tab === t ? 'text-cyan-600 dark:text-cyan-400 border-b-2 border-cyan-500' : 'text-slate-500 dark:text-[#64748b]'}`}
+                className={`flex-1 py-2 text-[11px] font-semibold transition-colors ${tab === t ? 'text-[#155DFC] border-b-2 border-[#155DFC]' : 'text-slate-500 dark:text-[#64748b]'}`}
               >
                 {label}
               </button>
@@ -179,7 +179,7 @@ export default function IconPicker({ currentIcon, onSelect, color = '#06b6d4' })
                       key={name}
                       title={name}
                       onClick={() => handleSelect(key)}
-                      className={`flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1c212b] transition-colors ${currentIcon === key ? 'bg-violet-100 dark:bg-violet-900/30' : ''}`}
+                      className={`flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1c212b] transition-colors ${currentIcon === key ? 'bg-[#155DFC]/10' : ''}`}
                     >
                       <U size={18} color={color} strokeWidth={1.5} />
                     </button>

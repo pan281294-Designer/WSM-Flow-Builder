@@ -1,6 +1,7 @@
 import { useFlowStore } from "../store/useFlowStore";
 import { COMPONENT_CATEGORIES, getComponentDetails } from "../data/componentsList";
 import IconPicker from "./IconPicker";
+import { Zap } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
@@ -40,7 +41,7 @@ function ToggleGroup({ options, value, onChange }) {
           onClick={() => onChange(opt.key)}
           className={`flex-1 flex items-center justify-center py-2 rounded-lg border transition-all text-slate-500 dark:text-slate-400
             ${value === opt.key
-              ? 'bg-violet-50 dark:bg-violet-900/30 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300'
+              ? 'bg-[#155DFC]/10 border-[#155DFC]/20 text-[#155DFC]'
               : 'border-slate-200 dark:border-[#30363d] hover:bg-slate-50 dark:hover:bg-[#1c212b]'
             }`}
         >
@@ -70,14 +71,14 @@ function EdgeProperties({ edgeId }) {
           <Switch
             checked={d.showLabel !== false}
             onCheckedChange={(checked) => upd('showLabel', checked)}
-            className="scale-75 data-[state=checked]:bg-cyan-500"
+            className="scale-75 data-[state=checked]:bg-[#155DFC]"
           />
         </div>
 
         {d.showLabel !== false && (
           <div className="space-y-3">
             <Input
-              className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-cyan-500 focus-visible:border-cyan-500"
+              className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-[#155DFC] focus-visible:border-[#155DFC]"
               value={d.label || ''}
               onChange={e => upd('label', e.target.value)}
               placeholder="e.g. Connect to data"
@@ -87,7 +88,7 @@ function EdgeProperties({ edgeId }) {
                 <button
                   key={c}
                   onClick={() => upd('labelColor', c)}
-                  className={`w-6 h-6 rounded-md border-2 transition-all ${d.labelColor === c || (!d.labelColor && c === 'emerald') ? 'border-cyan-500 scale-110 shadow-sm' : 'border-transparent hover:scale-105'}`}
+                  className={`w-6 h-6 rounded-md border-2 transition-all ${d.labelColor === c || (!d.labelColor && c === 'emerald') ? 'border-[#155DFC] scale-110 shadow-sm' : 'border-transparent hover:scale-105'}`}
                   style={{ backgroundColor: c === 'emerald' ? '#10b981' : c === 'violet' ? '#8b5cf6' : c === 'blue' ? '#3b82f6' : c === 'cyan' ? '#06b6d4' : c === 'amber' ? '#f59e0b' : c === 'rose' ? '#f43f5e' : '#64748b' }}
                   title={c}
                 />
@@ -158,7 +159,7 @@ function NodeProperties({ nodeId }) {
       <div>
         <SectionLabel>Label</SectionLabel>
         <Input
-          className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-cyan-500 focus-visible:border-cyan-500"
+          className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-[#155DFC] focus-visible:border-[#155DFC]"
           value={node.data.label || details?.label || ''}
           onChange={e => upd('label', e.target.value)}
           placeholder="Enter display name"
@@ -175,7 +176,7 @@ function NodeProperties({ nodeId }) {
             updateNodeData(nodeId, { componentId: val, label: nd.label, customIcon: null });
           }}
         >
-          <SelectTrigger className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus:ring-cyan-500">
+          <SelectTrigger className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus:ring-[#155DFC]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="dark:bg-[#161b22] dark:border-[#30363d]">
@@ -183,7 +184,7 @@ function NodeProperties({ nodeId }) {
               <SelectGroup key={cat.id}>
                 <SelectLabel className="text-[10px] font-bold text-slate-400 dark:text-[#64748b] uppercase tracking-wider">{cat.name}</SelectLabel>
                 {cat.items.map(item => (
-                  <SelectItem key={item.id} value={item.id} className="text-[13px] dark:text-[#e2e8f0] focus:bg-violet-50 dark:focus:bg-violet-900/30">
+                  <SelectItem key={item.id} value={item.id} className="text-[13px] dark:text-[#e2e8f0] focus:bg-[#155DFC]/10">
                     {item.label}
                   </SelectItem>
                 ))}
@@ -213,11 +214,11 @@ function NodeProperties({ nodeId }) {
       <div>
         <SectionLabel>Status</SectionLabel>
         <Select value={node.data.status || 'Active'} onValueChange={val => upd('status', val)}>
-          <SelectTrigger className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus:ring-cyan-500">
+          <SelectTrigger className="bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus:ring-[#155DFC]">
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="dark:bg-[#161b22] dark:border-[#30363d]">
-            {['Active', 'Idle', 'Error', 'Offline'].map(s => (
+            {['Active', 'Idle', 'Error', 'Offline', 'None'].map(s => (
               <SelectItem key={s} value={s} className="text-[13px] dark:text-[#e2e8f0]">{s}</SelectItem>
             ))}
           </SelectContent>
@@ -317,7 +318,7 @@ function NodeProperties({ nodeId }) {
         <Textarea
           value={node.data.description || ''}
           onChange={e => upd('description', e.target.value)}
-          className="h-20 bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-cyan-500 focus-visible:border-cyan-500 resize-none"
+          className="h-20 bg-slate-50 dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-[13px] font-medium text-slate-800 dark:text-[#e2e8f0] focus-visible:ring-[#155DFC] focus-visible:border-[#155DFC] resize-none"
           placeholder="Describe this component…"
         />
       </div>
@@ -347,7 +348,8 @@ export default function PropertiesPanel() {
       <div className="flex-1 overflow-y-auto p-5">
         {mode === 'empty' && (
           <div className="flex flex-col items-center justify-center h-full text-center border-[1.5px] border-dashed border-slate-200 dark:border-[#1e2330] rounded-xl bg-slate-50 dark:bg-[#161b22]/50 p-8 mt-4">
-            <p className="text-[13px] text-slate-500 dark:text-[#64748b] font-medium">Nothing selected</p>
+            <Zap className="text-[#155DFC]" size={22} />
+            <p className="text-[13px] text-slate-500 dark:text-[#64748b] font-medium mt-3">Nothing selected</p>
             <p className="text-[12px] text-slate-400 dark:text-[#475569] mt-1">Click a node or connection line to edit</p>
           </div>
         )}

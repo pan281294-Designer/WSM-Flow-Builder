@@ -6,7 +6,7 @@ import ReactFlow, {
   ReactFlowProvider,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { Sun, Moon, Download, Sparkles, LayoutTemplate, Copy, Clipboard, Trash2, ImagePlus, Undo2, ChevronDown, Check, FileCode2, CornerUpRight, Save, FolderOpen, PanelLeft, PanelRight } from 'lucide-react';
+import { Sun, Moon, Download, Sparkles, LayoutTemplate, Copy, Clipboard, Trash2, ImagePlus, Undo2, ChevronDown, Check, FileCode2, CornerUpRight, Save, FolderOpen, PanelLeft, PanelRight, PanelRightClose, PanelRightOpen } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
 import { Separator } from './components/ui/separator';
@@ -26,35 +26,11 @@ import { downloadVectorSVG, copyVectorSVG, downloadPNG } from "./utils/exportFlo
 
 const edgeTypes = { custom: CustomEdge };
 
-let id = 0;
-const getId = () => `node_${id++}`;
-
 const ALIGN_THRESHOLD = 8;
 
-function FlowCanvas() {
-  const reactFlowWrapper = useRef(null);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+function FlowCanvas({ reactFlowWrapper, reactFlowInstance, onInit }) {
   const [guides, setGuides] = useState([]);
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, undo, redo, copy, paste, duplicate, deleteSelected, saveProject } = useFlowStore();
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      const isMod = e.metaKey || e.ctrlKey;
-      if (isMod && e.key === 'z') { e.preventDefault(); undo(); }
-      if (isMod && e.key === 'y') { e.preventDefault(); redo(); }
-      if (isMod && e.key === 'c') { e.preventDefault(); copy(); }
-      if (isMod && e.key === 'v') { e.preventDefault(); paste(); }
-      if (isMod && e.key === 'd') { e.preventDefault(); duplicate(); }
-      if (isMod && e.key === 's') { e.preventDefault(); saveProject(); }
-      if (e.key === 'Delete' || e.key === 'Backspace') { 
-        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-          deleteSelected();
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [undo, redo, copy, paste, duplicate, deleteSelected, saveProject]);
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useFlowStore();
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -72,13 +48,13 @@ function FlowCanvas() {
         y: event.clientY - reactFlowBounds.top,
       });
       useFlowStore.getState().addNode({
-        id: getId(),
+        id: crypto.randomUUID(),
         type: 'universal',
         position,
         data: { componentId },
       });
     },
-    [reactFlowInstance]
+    [reactFlowWrapper, reactFlowInstance, useFlowStore]
   );
   
   // Use onSelectionChange — tracks both nodes and edges
@@ -122,7 +98,7 @@ function FlowCanvas() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        onInit={setReactFlowInstance}
+        onInit={onInit}
         onDrop={onDrop}
         onDragOver={onDragOver}
         onSelectionChange={onSelectionChange}
@@ -130,11 +106,11 @@ function FlowCanvas() {
         onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        connectionLineStyle={{ stroke: '#22d3ee', strokeWidth: 2 }}
+        connectionLineStyle={{ stroke: '#155DFC', strokeWidth: 2 }}
         connectionLineType="bezier"
         defaultEdgeOptions={{
           type: 'custom',
-          data: { shape: 'bezier', stroke: 'solid', arrow: 'arrow', color: '#22d3ee', width: 2 }
+          data: { shape: 'bezier', stroke: 'solid', arrow: 'arrow', color: '#155DFC', width: 2 }
         }}
         connectionRadius={30}
         connectionMode="loose"
@@ -157,9 +133,9 @@ function FlowCanvas() {
       {/* Smart alignment guides overlay */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {guides.map((g, i) => g.type === 'vertical' ? (
-          <div key={i} className="absolute top-0 bottom-0 w-px bg-blue-500 opacity-50" style={{ left: g.x }} />
+          <div key={i} className="absolute top-0 bottom-0 w-px bg-[#155DFC] opacity-50" style={{ left: g.x }} />
         ) : (
-          <div key={i} className="absolute left-0 right-0 h-px bg-blue-500 opacity-50" style={{ top: g.y }} />
+          <div key={i} className="absolute left-0 right-0 h-px bg-[#155DFC] opacity-50" style={{ top: g.y }} />
         ))}
       </div>
     </div>
@@ -167,10 +143,19 @@ function FlowCanvas() {
 }
 
 export default function App() {
+  const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const { nodes, edges, setNodes, setEdges, copy, paste, duplicate, deleteSelected, undo, redo, past, saveProject, loadProject, isSidebarOpen, isPropertiesOpen, toggleSidebar, toggleProperties } = useFlowStore();
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const { nodes, edges, setNodes, setEdges, copy, paste, duplicate, deleteSelected, undo, redo, past, saveProject, loadProject, isSidebarOpen, isPropertiesOpen, toggleSidebar, toggleProperties, deselectAll } = useFlowStore();
 
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
@@ -192,11 +177,30 @@ export default function App() {
   const [copyFeedback, setCopyFeedback] = useState(false);
 
   const handleCopySVG = async () => {
-    const success = await copyVectorSVG(nodes, edges);
+    const iconMap = getIconMap();
+    const success = await copyVectorSVG(nodes, edges, iconMap);
     if (success) {
       setCopyFeedback(true);
       setTimeout(() => setCopyFeedback(false), 2000);
     }
+  };
+
+  const getIconMap = () => {
+    const map = {};
+    document.querySelectorAll('.universal-node').forEach(nodeEl => {
+      const id = nodeEl.getAttribute('data-id');
+      const svg = nodeEl.querySelector('.rounded-xl svg');
+      if (id && svg) {
+        map[id] = svg.outerHTML;
+      }
+    });
+    return map;
+  };
+
+  const handleDownloadSVG = () => {
+    const iconMap = getIconMap();
+    downloadVectorSVG(nodes, edges, iconMap);
+    setIsExportOpen(false);
   };
 
   const handleAutoLayout = () => {
@@ -204,10 +208,28 @@ export default function App() {
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodes, edges, 'LR');
     setNodes([...layoutedNodes]);
     setEdges([...layoutedEdges]);
+    setTimeout(() => reactFlowInstance?.fitView({ padding: 0.2, duration: 800 }), 50);
+  };
+
+  const handleSave = () => {
+    const success = saveProject();
+    if (success) showToast("Project saved to local storage");
+    else showToast("Failed to save project", "error");
+  };
+
+  const handleLoad = () => {
+    const success = loadProject();
+    if (success) {
+      showToast("Project loaded successfully");
+      deselectAll();
+      setTimeout(() => reactFlowInstance?.fitView({ padding: 0.2, duration: 800 }), 50);
+    } else {
+      showToast("No saved project found", "error");
+    }
   };
 
   // Bind keyboard shortcuts (works outside Canvas scope)
-  useKeyboardShortcuts({ copy, paste, duplicate, deleteSelected, undo, redo });
+  useKeyboardShortcuts({ copy, paste, duplicate, deleteSelected, undo, redo, saveProject });
 
   const selectedCount = nodes.filter(n => n.selected).length;
 
@@ -217,16 +239,7 @@ export default function App() {
       <TooltipProvider delayDuration={400}>
       <div className="h-14 border-b border-slate-200 dark:border-[#1e2330] bg-white dark:bg-[#0d1017] flex items-center justify-between px-5 z-30 shadow-sm relative transition-colors">
         <div className="font-bold text-lg flex items-center gap-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={toggleSidebar}
-                className={`h-8 w-8 transition-colors ${isSidebarOpen ? 'text-[#155DFC]' : 'text-slate-400'}`}>
-                <PanelLeft size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{isSidebarOpen ? 'Hide Sidebar' : 'Show Sidebar'}</TooltipContent>
-          </Tooltip>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 pl-2">
             <span className="bg-[#155DFC] text-white px-2.5 py-1 rounded-md text-sm font-extrabold shadow-inner leading-relaxed">WSM</span>
             <span className="tracking-tight text-slate-800 dark:text-white font-medium">Flow Builder</span>
           </div>
@@ -258,8 +271,8 @@ export default function App() {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={saveProject}
-                className="h-8 w-8 text-slate-400 hover:text-violet-500 dark:hover:text-violet-400">
+              <Button variant="ghost" size="icon" onClick={handleSave}
+                className="h-8 w-8 text-slate-400 hover:text-[#155DFC]">
                 <Save size={15} />
               </Button>
             </TooltipTrigger>
@@ -268,7 +281,7 @@ export default function App() {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={loadProject}
+              <Button variant="ghost" size="icon" onClick={handleLoad}
                 className="h-8 w-8 text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400">
                 <FolderOpen size={15} />
               </Button>
@@ -280,7 +293,7 @@ export default function App() {
 
           {/* Selection feedback */}
           {selectedCount > 1 && (
-            <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700 font-bold">
+            <Badge className="bg-[#155DFC]/10 text-[#155DFC] border-[#155DFC]/20 font-bold">
               {selectedCount} selected
             </Badge>
           )}
@@ -343,14 +356,14 @@ export default function App() {
             </Button>
             {isExportOpen && (
               <div className="absolute top-full right-0 mt-1 w-48 bg-white dark:bg-[#0d1117] border border-slate-200 dark:border-[#30363d] rounded-xl shadow-2xl p-1.5 z-50">
-                <button onClick={() => { downloadVectorSVG(nodes, edges); setIsExportOpen(false); }}
+                <button onClick={handleDownloadSVG}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1c212b] rounded-lg transition-colors">
-                  <Download size={14} className="text-cyan-500" /> Download SVG
+                  <Download size={14} className="text-[#155DFC]" /> Download SVG
                 </button>
                 <button onClick={() => { handleCopySVG(); setIsExportOpen(false); }}
                   className="w-full flex items-center justify-between px-3 py-2 text-[12.5px] font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-[#1c212b] rounded-lg transition-colors">
                   <div className="flex items-center gap-2.5">
-                    <FileCode2 size={14} className="text-violet-500" /> Copy SVG Code
+                    <FileCode2 size={14} className="text-[#155DFC]" /> Copy SVG Code
                   </div>
                   {copyFeedback && <Check size={12} className="text-emerald-500" />}
                 </button>
@@ -365,7 +378,7 @@ export default function App() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline" size="icon" onClick={toggleTheme}
-                className="h-8 w-8 dark:bg-[#161b22] dark:border-[#30363d] text-slate-600 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400">
+                className="h-8 w-8 dark:bg-[#161b22] dark:border-[#30363d] text-slate-600 dark:text-slate-400 hover:text-[#155DFC]">
                 {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
               </Button>
             </TooltipTrigger>
@@ -374,12 +387,16 @@ export default function App() {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={toggleProperties}
+              <Button variant="ghost" size="icon" onClick={() => {
+                const nextState = !isPropertiesOpen;
+                if (!nextState) deselectAll();
+                useFlowStore.setState({ isSidebarOpen: nextState, isPropertiesOpen: nextState });
+              }}
                 className={`h-8 w-8 transition-colors ${isPropertiesOpen ? 'text-[#155DFC]' : 'text-slate-400'}`}>
-                <PanelRight size={18} />
+                {isPropertiesOpen ? <PanelRightClose size={18} /> : <PanelRightOpen size={18} />}
               </Button>
             </TooltipTrigger>
-            <TooltipContent>{isPropertiesOpen ? 'Hide Properties' : 'Show Properties'}</TooltipContent>
+            <TooltipContent>{isPropertiesOpen ? 'Hide Panels' : 'Show Panels'}</TooltipContent>
           </Tooltip>
 
           <Separator orientation="vertical" className="h-5 mx-1 dark:bg-[#30363d]" />
@@ -395,10 +412,19 @@ export default function App() {
       <div className="flex-1 flex flex-row relative h-[calc(100vh-56px)]">
         {isSidebarOpen && <Sidebar />}
         <ReactFlowProvider>
-          <FlowCanvas />
+          <FlowCanvas reactFlowWrapper={reactFlowWrapper} reactFlowInstance={reactFlowInstance} onInit={setReactFlowInstance} />
         </ReactFlowProvider>
         {isPropertiesOpen && <PropertiesPanel />}
       </div>
+ 
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-4 py-2.5 rounded-xl shadow-2xl border flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 duration-300
+          ${toast.type === 'error' ? 'bg-red-50 border-red-200 text-red-800' : 'bg-white dark:bg-[#161b22] border-slate-200 dark:border-[#30363d] text-slate-800 dark:text-white'}`}>
+          <div className={`w-2 h-2 rounded-full ${toast.type === 'error' ? 'bg-red-500' : 'bg-[#155DFC]'}`} />
+          <span className="text-sm font-semibold">{toast.message}</span>
+        </div>
+      )}
 
       <AIConnectModal isOpen={isAIModalOpen} onClose={() => setIsAIModalOpen(false)} />
       <ImageUploadModal isOpen={isUploadOpen} onClose={() => setIsUploadOpen(false)} />
